@@ -1,20 +1,13 @@
 package com.ait.stopwatch
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.time_display.*
 import kotlinx.android.synthetic.main.time_display.view.*
-import java.text.DateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
-    var threadEnabled = false
     lateinit var timer: Timer
     var millisecondTime = 0L
     var startTime = 0L
@@ -29,8 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        tvTime.text = "00:00:00"
+        tvTime.text = getString(R.string.tvTime_default_text)
 
         btnStart.setOnClickListener {
             if (startAlreadyClicked == false) {
@@ -39,10 +31,7 @@ class MainActivity : AppCompatActivity() {
                 timer = Timer()
                 startTime = SystemClock.uptimeMillis()
                 timer.schedule(RunTimeTimerTask(), 10, 10)
-
             }
-
-
         }
 
         btnMark.setOnClickListener {
@@ -54,12 +43,11 @@ class MainActivity : AppCompatActivity() {
         btnStop.setOnClickListener {
             timer.cancel()
             allowMark = false
-
         }
 
         btnClear.setOnClickListener {
             onStop()
-            tvTime.text = "00:00:00"
+            tvTime.text = getString(R.string.tvTime_default_text)
             millisecondTime = 0L
             startTime = 0L
             timeBuff = 0L
@@ -67,23 +55,17 @@ class MainActivity : AppCompatActivity() {
             seconds = 0
             minutes = 0
             milliSeconds = 0
-           startAlreadyClicked = false
+            startAlreadyClicked = false
             allowMark = false
-
-
         }
-
     }
 
     override fun onStop() {
         super.onStop()
         timer.cancel()
-        timer.purge()
-
     }
 
     private fun addTime() {
-
         var markView = layoutInflater.inflate(
             R.layout.time_display, null, false
         )
@@ -92,43 +74,37 @@ class MainActivity : AppCompatActivity() {
             layoutContent.removeView(markView)
         }
 
-
         layoutContent.addView(markView, 0)
-
         markView.etMark.setText(
             "" + minutes + ":"
                     + String.format("%02d", seconds) + ":"
                     + String.format("%03d", milliSeconds)
         )
-
     }
 
 
     private inner class RunTimeTimerTask : TimerTask() {
         override fun run() {
             runOnUiThread {
-                    millisecondTime = SystemClock.uptimeMillis() - startTime
+                millisecondTime = SystemClock.uptimeMillis() - startTime
 
-                    updateTime = timeBuff + millisecondTime
+                updateTime = timeBuff + millisecondTime
 
-                    seconds = (updateTime / 1000).toInt()
+                seconds = (updateTime / 1000).toInt()
 
-                    minutes = seconds / 60
+                minutes = seconds / 60
 
-                    seconds = seconds % 60
+                seconds = seconds % 60
 
-                    milliSeconds = (updateTime % 1000).toInt()
+                milliSeconds = (updateTime % 1000).toInt()
 
-                    tvTime.setText(
-                        "" + minutes + ":"
-                                + String.format("%02d", seconds) + ":"
-                                + String.format("%03d", milliSeconds)
-                    )
-
+                tvTime.setText(
+                    "" + minutes + ":"
+                            + String.format("%02d", seconds) + ":"
+                            + String.format("%03d", milliSeconds)
+                )
             }
         }
     }
-
-
 }
 

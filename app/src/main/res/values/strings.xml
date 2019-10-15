@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">StopWatch</string>
+    <string name="btn_delete_text">Delete</string>
+    <string name="btn_start_text">Start</string>
+    <string name="btn_stop_text">Stop</string>
+    <string name="btn_clear_text">Clear</string>
+    <string name="btn_mark_text">Mark</string>
+    <string name="tvTime_default_text">00:00:00</string>
 </resources>
